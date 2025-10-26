@@ -1,97 +1,79 @@
-{%extends "base.html"%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo Estudiante</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
 
-{% block content %}
-<div class="row justify-content.center">
-    <div class="col-md-8 col-jg-6">
-        <div class="card shadow">
-            <div class="card-header bg-primary text-white">
-                <h4 class="mb-0">
-                    <i class="bi bi-person-plus-fill"></i> Registrar Nuevo Cliente *
-                </h4>
-            </div>
-            <div class="card-body">
-                <form method="POST" action="{{ url_for('nuevo')}}">
-                    <!--Nombre-->
-                    <div class="mb-3">
-                        <label for="nombre" class="form-label">
-                            <i class="bi bi-person-fill"></i> Nombre Completo *
-                        </label>
-                        <input 
-                        type="text" 
-                        class="form-control" 
-                        id="nombre" 
-                        name="nombre" 
-                        required
-                        placeholder="Ej:Juan Pérez"
-                        value="{{ nombre if nombre else''}}"
-                        >
-                        <div clas="form-text">El nombre debe ser único</div>
-                    </div>
-
-                    <!--Carrera-->
-                    <div class="mb-3">
-                        <label for="carrera" class="form-label">
-                            <i class="bi bi-mortanboard-fill"></i> Carrera *
-                        </label>
-                        <input 
-                        type="text"
-                        class="form-control"
-                        id="carrera"
-                        name="carrera"
-                        required
-                        placeholder="Ej:Ingeniería en Sistemas"
-                        value="{{ carrera if carrera else''}}"
-                        >
-                    </div>
-
-                    <!--Promedio-->
-                    <div class="mb-4">
-                        <label for="promedio" class="form-label">
-                            <i class="bi bi-star-fill"></i> Promedio *
-                        </label>
-                        <input
-                        type="number"
-                        class="form-control"
-                        id="promedio"
-                        name="promedio"
-                        required
-                        step="0.01"
-                        min="0"
-                        max="10"
-                        placeholder="Ej:8.5"
-                        value="{{promedio if promedio else ''}}"
-                       >
-                       <div class="form-text">Debe ser un valor entre 0 y 10</div> 
-                    </div>
-
-
-                    <!--Botones-->
-                    <div class="d-grid gap 2">
-                        <button type="submit" class="btn btn-success btn-lg">
-                            <i class="bi bi-check-circle-fill"></i> Cancelar
-                        </button>
-                        <a href="{{ url_for('index')}}" class="btn btn-secondary">
-                            <i class="bi bi-x-circle-fill"></i> Cancelar
-                        </a>
-                    </div>
-                </form>
-            </div>
+    <nav class="navbar navbar-dark bg-primary mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="/">Registro de Estudiantes</a>
+            <a href="/" class="btn btn-light">Volver al Inicio</a>
         </div>
-        
-        
-        <!--informacion Adicional-->
-        <div class="alert alert-info mt-4">
-            <h5 class="alert-heading">
-                <i class="bi bi-info-circle-fill"></i> Información
-            </h5>
-            <ul class="mb-0">
-                <li>Todos los campos son obligatorios</li>
-                <li>El nombre del estudiante debe ser único.</li>
-                <li>El promedio debe estar entre 0 y 10.</li>
-                <li>La fecha de registro se asigna automáticamente.</li>
-            </ul>
+    </nav>
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="bg-white rounded p-4 shadow-sm">
+                    
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <h2 class="mb-4">Registrar Nuevo Estudiante</h2>
+
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre completo *</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" 
+                                placeholder="Ej: Juan Perez" required>
+                            <div class="form-text">El nombre debe ser unico</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="carrera" class="form-label">Carrera *</label>
+                            <input type="text" class="form-control" id="carrera" name="carrera" 
+                                placeholder="Ej: Ingenieria en Sistemas" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="promedio" class="form-label">Promedio *</label>
+                            <input type="number" class="form-control" id="promedio" name="promedio" 
+                                step="0.01" min="0" max="10" placeholder="Ej: 8.5" required>
+                            <div class="form-text">Debe ser un valor entre 0 y 10</div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg">Guardar Estudiante</button>
+                            <a href="/" class="btn btn-secondary">Cancelar</a>
+                        </div>
+                    </form>
+
+                    <div class="alert alert-info mt-4">
+                        <h6 class="alert-heading">Informacion:</h6>
+                        <ul class="mb-0 small">
+                            <li>Todos los campos son obligatorios</li>
+                            <li>El nombre del estudiante debe ser unico</li>
+                            <li>El promedio debe estar entre 0 y 10</li>
+                            <li>La fecha de registro se asigna automaticamente</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-{% endblock %}
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
